@@ -13,4 +13,4 @@ Wallpaper: https://www.deviantart.com/aenami/art/Someday-802485629
 GTK Theme: Palenight  
 Web browser startpage: Customized https://github.com/deepjyoti30/startpage#settings  
 
-![Setup-image](https://i.imgur.com/iBDJTLA.png)
+![Setup-image](https://imgur.com/a/cD7kk9M)
