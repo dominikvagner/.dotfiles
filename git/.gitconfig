@@ -1,0 +1,8 @@
+[user]
+	name = Dominik Vagner
+	email = dvagner@redhat.com
+[core]
+	editor = nvim
+	excludesfile = /home/dvagner/.gitignore
+[push]
+	autoSetupRemote = true
