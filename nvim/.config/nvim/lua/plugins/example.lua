@@ -1,6 +1,26 @@
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
-if true then return {} end
+if true then return {
+  {
+    'nvim-neotest/neotest',
+    dependencies = {
+      'thenbe/neotest-playwright',
+        dependencies = 'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('neotest').setup({
+        adapters = {
+          require('neotest-playwright').adapter({
+            options = {
+              persist_project_selection = true,
+              enable_dynamic_test_discovery = true,
+            },
+          }),
+        },
+      })
+    end,
+  },
+} end
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --

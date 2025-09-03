@@ -58,7 +58,14 @@ setopt hist_find_no_dups
 ### Keybinds
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
-
+bindkey -e ${$(tput kDC3 2>/dev/null):-'\e[3;3~'} kill-word
+bindkey "^[[3~" delete-char                     # Key Del
+bindkey "^[[5~" beginning-of-buffer-or-history  # Key Page Up
+bindkey "^[[6~" end-of-buffer-or-history        # Key Page Down
+bindkey "^[[H" beginning-of-line                # Key Home
+bindkey "^[[F" end-of-line                      # Key End
+bindkey "^[[1;3C" forward-word                  # Key Alt + Right
+bindkey "^[[1;3D" backward-word                 # Key Alt + Left
 
 ### Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -69,59 +76,38 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 
 ### Aliases
-alias ls='ls --color'
+alias ls='ls -a --color'
+alias la='ls -a --color'
+alias ll='ls -lah --color'
 alias vim='nvim'
 alias v='nvim'
 alias c='clear'
 alias http='http --print=hb'
+alias restow='cd ~/.dotfiles/ && make && cd -'
 
 
 ### Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-export GOPATH=$HOME/go
-
 ### PATH exports
-export PATH=$PATH:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:$HOME/.local/lib/python3.12/site-packages:$HOME/scripts
+export PATH=$PATH:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:$HOME/.local/lib/python3.12/site-packages:$HOME/scripts:$HOME/.local/bin
+export GOPATH=$HOME/go
+export XDG_DATA_DIRS="$HOME/.local/share/applications/:$XDG_DATA_DIRS"
+export EDITOR='nvim'
 
 ### IQE
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 export DYNACONF_MAIN__use_browser=chrome
 
-function cs-helper {
-  local command="$1"
-  local arg1="$2"
-  local input=$(cat)
-
-  if [[ "$command" == "yank" ]]; then
-    if [ -z "$arg1" ]; then
-      printf "ERR: No attribute name provided\n" >&2
-      return 1
-    fi
-
-    # Pass through original content
-    echo "$input" | head -n 7
-    echo "$input" | tail -n +7 | jq -S --color-output --indent 4
-
-    # Extract value using provided field name
-    local value=$(echo "$input" | tail -n +7 | jq -r --arg field "$arg1" '.[$field] // empty')
-
-    if [ -n "$value" ]; then
-      # Output variable assignment instead of exporting
-      export UUID=$value
-      return 0
-    else
-      printf "ERR: Field '%s' not found\n" "$arg1" >&2
-      return 1
-    fi
-  fi
-
-  printf "Nothing to be found here... 🏗🔧\n"
-  printf "Supported commands: 'yank <field-name>'\n"
-  return 1
+### FUNCTIONS
+function cursor {
+  (nohup "$HOME/Applications/Cursor-1.1.3-x86_64.AppImage" "$@" > /dev/null 2>&1 &)
 }
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+unset http_proxy;
+unset https_proxy;
+unset HTTP_PROXY;
+unset HTTPS_PROXY;
+
+eval "$(mise activate zsh)"
