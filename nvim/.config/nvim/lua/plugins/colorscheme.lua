@@ -5,11 +5,12 @@ return {
   { "rose-pine/neovim", name = "rose-pine" },
   { "nyoom-engineering/oxocarbon.nvim" },
   { "rebelot/kanagawa.nvim" },
+  { "vague2k/vague.nvim" },
   -- Configure LazyVim to load melange
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "melange",
+      colorscheme = "vague",
     },
   },
 }

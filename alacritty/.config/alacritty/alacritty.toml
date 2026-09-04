@@ -1,52 +1,24 @@
-[env]
-TERM = "xterm-256color"
-
 [terminal.shell]
-program = "zellij"
+program = "zsh"
 
-[window]
-padding.x = 16
-padding.y = 14
-decorations = "None"
 
-[keyboard]
-bindings = [
-{ key = "F11", action = "ToggleFullscreen" }
-]
+[selection]
+save_to_clipboard = true
 
 [font]
+size = 13
 normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
 bold = { family = "CaskaydiaMono Nerd Font", style = "Bold" }
 italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
 
-# Colors (Tokyo Night)
-# Source https//github.com/zatchheems/tokyo-night-alacritty-theme
+[window]
+decorations = "none"
+dynamic_padding = true
+padding = { x = 4, y = 4 }
 
-# Default colors
-[colors.primary]
-background = '#1a1b26'
-foreground = '#a9b1d6'
+[general]
+import = ["themes/bloodmoon.toml"]
 
-# Normal colors
-[colors.normal]
-black   = '#32344a'
-red     = '#f7768e'
-green   = '#9ece6a'
-yellow  = '#e0af68'
-blue    = '#7aa2f7'
-magenta = '#ad8ee6'
-cyan    = '#449dab'
-white   = '#787c99'
-
-# Bright colors
-[colors.bright]
-black   = '#444b6a'
-red     = '#ff7a93'
-green   = '#b9f27c'
-yellow  = '#ff9e64'
-blue    = '#7da6ff'
-magenta = '#bb9af7'
-cyan    = '#0db9d7'
-white   = '#acb0d0'
-
-[terminal]
+# to install the themes
+# mkdir -p ~/.config/alacritty/themes
+# git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes

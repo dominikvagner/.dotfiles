@@ -1,11 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-
 ### ZINIT SETUP
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -19,8 +11,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 
 ### PLUGINS
-# Add in Powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
@@ -33,6 +23,7 @@ zinit snippet OMZP::command-not-found
 
 
 ### Load completions
+autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 zinit cdreplay -q
 
@@ -48,12 +39,6 @@ setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
-
-
-### P10K
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 
 ### Keybinds
 bindkey '^p' history-search-backward
@@ -91,23 +76,25 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 ### PATH exports
-export PATH=$PATH:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:$HOME/.local/lib/python3.12/site-packages:$HOME/scripts:$HOME/.local/bin
+export PATH=$PATH:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:$HOME/.local/lib/python3.12/site-packages:$HOME/scripts:$HOME/.local/bin:$HOME/.cargo/bin
 export GOPATH=$HOME/go
 export XDG_DATA_DIRS="$HOME/.local/share/applications/:$XDG_DATA_DIRS"
 export EDITOR='nvim'
 
-### IQE
-export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
-export DYNACONF_MAIN__use_browser=chrome
-
-### FUNCTIONS
-function cursor {
-  (nohup "$HOME/Applications/Cursor-1.1.3-x86_64.AppImage" "$@" > /dev/null 2>&1 &)
-}
-
-unset http_proxy;
-unset https_proxy;
-unset HTTP_PROXY;
-unset HTTPS_PROXY;
-
 eval "$(mise activate zsh)"
+eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/home/dvagner/.bun/_bun" ] && source "/home/dvagner/.bun/_bun"
+
+complete -C '/home/dvagner/.local/bin/aws_completer' aws
+eval "$(LC_ALL=C _PULP_COMPLETE=zsh_source pulp)"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/home/dvagner/.opencode/bin:$PATH
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
